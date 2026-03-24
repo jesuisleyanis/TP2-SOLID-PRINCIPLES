@@ -104,7 +104,8 @@ var bobForHousekeeping = new Reservation
     GuestCount = 2,
     RoomType = "Suite"
 };
-var bobLinenDays = bobForHousekeeping.GetLinenChangeDays();
+var housekeepingScheduler = new HousekeepingScheduler();
+var bobLinenDays = housekeepingScheduler.GetLinenChangeDays(bobForHousekeeping);
 Console.WriteLine($"Linen change schedule for Bob Dupont (Room 201, 15/06 -> 22/06):");
 foreach (var day in bobLinenDays)
     Console.WriteLine($"  - {day:dd/MM/yyyy}");
@@ -119,7 +120,7 @@ var durandForHousekeeping = new Reservation
     GuestCount = 4,
     RoomType = "Family"
 };
-var durandLinenDays = durandForHousekeeping.GetLinenChangeDays();
+var durandLinenDays = housekeepingScheduler.GetLinenChangeDays(durandForHousekeeping);
 Console.WriteLine($"Cleaning tasks for Famille Durand (Room 301, 20/06 -> 25/06):");
 foreach (var day in durandLinenDays)
     Console.WriteLine($"  - {day:dd/MM/yyyy}");
