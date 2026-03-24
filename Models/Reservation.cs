@@ -1,9 +1,11 @@
 namespace HotelReservation.Models;
 
+using HotelReservation.Services;
+
 // Exercice 1.3 — SRP : Reservation ne garde que les données et le cycle de vie (réceptionniste).
 // Les responsabilités du comptable et de la gouvernante sont extraites.
 
-public class Reservation
+public class Reservation : IInvoiceData
 {
     public string Id { get; set; } = string.Empty;
     public string GuestName { get; set; } = string.Empty;

@@ -2,19 +2,19 @@ namespace HotelReservation.Services;
 
 using HotelReservation.Repositories;
 
-// ISP VIOLATION: Depends on IReservationRepository (9 methods) but only uses
-// GetById and GetTotalRevenue.
+// Exercice 4 — ISP : BillingService ne dépend plus que de IReservationStats
+// au lieu de l'interface complète IReservationRepository (9 méthodes).
 public class BillingService
 {
-    private readonly IReservationRepository _repo;
+    private readonly IReservationStats _stats;
 
-    public BillingService(IReservationRepository repo)
+    public BillingService(IReservationStats stats)
     {
-        _repo = repo;
+        _stats = stats;
     }
 
     public decimal GetRevenueForPeriod(DateTime from, DateTime to)
     {
-        return _repo.GetTotalRevenue(from, to);
+        return _stats.GetTotalRevenue(from, to);
     }
 }
