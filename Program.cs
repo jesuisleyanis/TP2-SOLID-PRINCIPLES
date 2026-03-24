@@ -62,7 +62,7 @@ Console.WriteLine();
 // ---------------------------------------------------------------
 Console.WriteLine("--- Scenario 4: Check-In / Check-Out ---");
 var bobReservation = reservationService.GetReservation(id2)!;
-var checkInService = new CheckInService(new Dictionary<string, Reservation>());
+var checkInService = new CheckInService();
 checkInService.ProcessCheckIn(bobReservation);
 Console.WriteLine($"[OK] {bobReservation.GuestName} checked in to Room {bobReservation.RoomId}");
 checkInService.ProcessCheckOut(bobReservation);
@@ -170,7 +170,7 @@ Console.WriteLine();
 // Scenario 9: LSP Violation Demo
 // ---------------------------------------------------------------
 Console.WriteLine("--- Scenario 9: LSP Violation Demo ---");
-ICancellable flexibleRes = new FlexibleReservation
+ICancellableReservation flexibleRes = new FlexibleReservation
 {
     Id = "FLEX-001", GuestName = "Test Flexible", TotalPrice = 200m
 };

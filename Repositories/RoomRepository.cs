@@ -1,0 +1,20 @@
+namespace HotelReservation.Repositories;
+
+using HotelReservation.Models;
+
+// Exercice 1.1 — SRP : INFRASTRUCTURE LAYER
+// Accès aux données des chambres.
+public class RoomRepository
+{
+    private readonly List<Room> _rooms = new()
+    {
+        new Room { Id = "101", Type = "Standard", MaxGuests = 2, PricePerNight = 80m },
+        new Room { Id = "102", Type = "Standard", MaxGuests = 2, PricePerNight = 80m },
+        new Room { Id = "201", Type = "Suite", MaxGuests = 2, PricePerNight = 200m },
+        new Room { Id = "301", Type = "Family", MaxGuests = 4, PricePerNight = 120m }
+    };
+
+    public Room? GetById(string roomId) => _rooms.FirstOrDefault(r => r.Id == roomId);
+
+    public List<Room> GetAll() => _rooms;
+}

@@ -9,15 +9,9 @@ using HotelReservation.Models;
 public class CheckInService
 {
     private readonly Dictionary<string, CacheEntry> _cache = new();
-    private readonly Dictionary<string, Reservation> _dataStore;
 
     private const decimal LateCheckInFee = 25m;
     private const int LateCheckInHour = 22;
-
-    public CheckInService(Dictionary<string, Reservation> dataStore)
-    {
-        _dataStore = dataStore;
-    }
 
     public void ProcessCheckIn(Reservation reservation)
     {

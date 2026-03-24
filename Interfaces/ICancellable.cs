@@ -18,9 +18,3 @@ public interface ICancellableReservation : IReservation
 {
     void Cancel();
 }
-
-// ICancellable conservé comme alias pour ne pas casser le code existant
-// qui utilise déjà ICancellable (ex: Program.cs scenario 9)
-public interface ICancellable : ICancellableReservation
-{
-}
