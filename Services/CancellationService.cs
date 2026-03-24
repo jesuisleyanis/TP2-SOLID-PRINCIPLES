@@ -1,37 +1,35 @@
 namespace HotelReservation.Services;
 
 using HotelReservation.Models;
+using HotelReservation.Interfaces;
 
-// OCP VIOLATION: Adding a new cancellation policy (e.g., "SuperFlexible")
-// requires opening this class and adding a new case to the switch.
+// Exercice 2.2 — OCP : le switch/case est remplacé par un dictionnaire de politiques.
+// Ajouter une nouvelle politique ne nécessite plus de modifier cette classe.
 public class CancellationService
 {
+    private readonly Dictionary<string, ICancellationPolicy> _policies;
+
+    public CancellationService()
+    {
+        var policyList = new ICancellationPolicy[]
+        {
+            new FlexiblePolicy(),
+            new ModeratePolicy(),
+            new StrictPolicy(),
+            new NonRefundablePolicy()
+        };
+        _policies = policyList.ToDictionary(p => p.Name);
+    }
+
     public decimal CalculateRefund(Reservation reservation, DateTime now)
     {
         var daysBeforeCheckIn = (reservation.CheckIn - now).Days;
 
-        switch (reservation.CancellationPolicy)
-        {
-            case "Flexible":
-                return daysBeforeCheckIn >= 1 ? reservation.TotalPrice : 0m;
+        if (!_policies.TryGetValue(reservation.CancellationPolicy, out var policy))
+            throw new ArgumentException(
+                $"Unknown cancellation policy: {reservation.CancellationPolicy}");
 
-            case "Moderate":
-                if (daysBeforeCheckIn >= 5) return reservation.TotalPrice;
-                if (daysBeforeCheckIn >= 2) return reservation.TotalPrice * 0.5m;
-                return 0m;
-
-            case "Strict":
-                if (daysBeforeCheckIn >= 14) return reservation.TotalPrice;
-                if (daysBeforeCheckIn >= 7) return reservation.TotalPrice * 0.5m;
-                return 0m;
-
-            case "NonRefundable":
-                return 0m;
-
-            default:
-                throw new ArgumentException(
-                    $"Unknown cancellation policy: {reservation.CancellationPolicy}");
-        }
+        return policy.CalculateRefund(reservation, daysBeforeCheckIn);
     }
 
     public void CancelReservation(Reservation reservation, DateTime now)
