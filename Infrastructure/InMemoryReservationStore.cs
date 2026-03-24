@@ -1,8 +1,10 @@
 namespace HotelReservation.Infrastructure;
 
 using HotelReservation.Models;
+using HotelReservation.Services;
 
-public class InMemoryReservationStore
+// Exercice 5.1 — DIP : implémente IReservationStore défini dans le module métier.
+public class InMemoryReservationStore : IReservationStore
 {
     private readonly Dictionary<string, Reservation> _reservations = new();
 
