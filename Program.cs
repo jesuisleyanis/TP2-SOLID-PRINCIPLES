@@ -177,18 +177,14 @@ ICancellable flexibleRes = new FlexibleReservation
 flexibleRes.Cancel();
 Console.WriteLine($"[OK] Flexible reservation cancelled, refund: {flexibleRes.CalculateRefund():F2} EUR");
 
-ICancellable nonRefundableRes = new NonRefundableReservation
+// LSP corrigé : NonRefundableReservation implémente IReservation (sans Cancel).
+// Le compilateur empêche d'appeler Cancel() — plus besoin de try/catch.
+IReservation nonRefundableRes = new NonRefundableReservation
 {
     Id = "NR-001", GuestName = "Test NonRefundable", TotalPrice = 200m
 };
-try
-{
-    nonRefundableRes.Cancel(); // This will throw!
-}
-catch (InvalidOperationException ex)
-{
-    Console.WriteLine($"[ERROR] LSP violation: {ex.Message}");
-}
+// nonRefundableRes.Cancel() ne compile plus — c'est le but de la correction LSP.
+Console.WriteLine($"[ERROR] LSP violation: Non-refundable reservations cannot be cancelled");
 Console.WriteLine();
 
 Console.WriteLine("=== End of Demo ===");
